@@ -10,21 +10,27 @@ router.route('/').get((req, res) => {
 
 
 router.route('/add').post((req, res) => {
-  const username = req.body.username;
-  const description = req.body.description;
-  const rating = Number(req.body.rating);
-  const date = Date.parse(req.body.date);
+  try {
+    const username = req.body.username;
+    const description = req.body.description;
+    const rating = Number(req.body.rating);
+    const date = Date.parse(req.body.date);
+    
+    const newRecording = new Recording({
+        username,
+        description, 
+        rating, 
+        date,
+      });
 
-  const newRecording = new Recording({
-      username,
-      description, 
-      rating, 
-      date,
-    });
-
-  newRecording.save()
-    .then(() => res.json('Recording added!'))
-    .catch(err => res.status(400).json('Error: ' + err));
+    newRecording.save()
+      .then(() => res.json('Recording added!'))
+      .catch(err => res.status(400).json('Error: ' + err));
+  }
+  catch (e) {
+    console.log(e);
+    res.status(400).json('Error: ' + e);
+  }
 });
 
 router.route('/calendar/:username').get((req, res) => {
@@ -45,6 +51,17 @@ router.route('/:id').delete((req, res) => {
     Recording.findByIdAndDelete(req.params.id)
         .then(() => res.json('Exercise deleted.'))
         .catch(err => res.status(400).json('Error: ' + err));
+});
+
+function findUser(name) {
+  return User.find({username: name});
+}
+
+router.route('/findUser/:username').get((req, res) => {
+  var query = {username: req.params.username};
+  User.find(query)
+    .then(users => res.json(users))
+    .catch(err => res.status(400).json('Error: ' + err));
 });
 
 module.exports = router;

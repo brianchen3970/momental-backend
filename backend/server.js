@@ -15,13 +15,15 @@ mongoose.connect(uri, { useNewUrlParser: true });
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
-})
+});
 
 const recordingsRouter = require('./routes/recordings');
 const usersRouter = require('./routes/users');
+const webRouter = require('./routes/web');
 
 app.use('/recordings', recordingsRouter);
-app.use('/users', usersRouter);
+app.use('/', webRouter);
+app.use('/api/users', usersRouter);
 
 
 app.listen(port, () => {
