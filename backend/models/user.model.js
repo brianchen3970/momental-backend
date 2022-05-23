@@ -9,7 +9,10 @@ const userSchema = new Schema({
         unique: true, 
         trim: true,
         minlength: 1
-    }
+    }, 
+    friends: {
+        type: Array
+    }, 
 }, {
     timestamps: true,
 })

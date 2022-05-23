@@ -9,8 +9,9 @@ router.route('/').get((req, res) => {
 
 router.route('/add').post((req, res) => {
   const username = req.body.username;
+  const friends = req.body.friends;
 
-  const newUser = new User({username});
+  const newUser = new User({username, friends});
 
   newUser.save()
     .then(() => res.json('User added!'))
@@ -20,6 +21,13 @@ router.route('/add').post((req, res) => {
 router.route('/findUser/:username').get((req, res) => {
   var query = {username: req.params.username};
   User.find(query)
+    .then(users => res.json(users))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/findFriends/:username').get((req, res) => {
+  var query = {username: req.params.username};
+  User.find(query, {'_id': 0, 'friends': 1})
     .then(users => res.json(users))
     .catch(err => res.status(400).json('Error: ' + err));
 });
