@@ -1,11 +1,13 @@
 const router = require('express').Router();
 let Recording = require('../models/recording.model');
+let User = require('../models/user.model');
 
 router.route('/').get((req, res) => {
   Recording.find()
     .then(recordings => res.json(recordings))
     .catch(err => res.status(400).json('Error: ' + err));
 });
+
 
 router.route('/add').post((req, res) => {
   const username = req.body.username;
@@ -23,6 +25,14 @@ router.route('/add').post((req, res) => {
   newRecording.save()
     .then(() => res.json('Recording added!'))
     .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/calendar/:username').get((req, res) => {
+    var query = {username: req.params.username};
+    Recording.find(query)
+    .then(recordings => res.json(recordings))
+    .catch(err => res.status(400).json('Error: ' + err));
+
 });
 
 router.route('/:id').get((req, res) => {

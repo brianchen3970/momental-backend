@@ -17,4 +17,11 @@ router.route('/add').post((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/findUser/:username').get((req, res) => {
+  var query = {username: req.params.username};
+  User.find(query)
+    .then(users => res.json(users))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 module.exports = router;
