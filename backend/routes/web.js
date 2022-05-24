@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const fs = require('fs');
 let User = require('../models/user.model');
-const filePath = "/Users/arnav/Desktop/momental/frontend/build";
+const filePath = "/Users/brianchen/momental/frontend/build";
 
 router.route('/:filename?').get((req, res) => {
   let filename = req.params.filename;
