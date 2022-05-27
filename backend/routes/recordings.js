@@ -49,7 +49,8 @@ router.post('/upload', upload.single('file'), (req, res) => {
   res.redirect('/');
 });
 
-router.get('/image/:filename', (req, res) => {
+router.get('/audio/:filename', (req, res) => {
+  //console.log("here");
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
     // Check if file
     if (!file || file.length === 0) {
@@ -60,11 +61,13 @@ router.get('/image/:filename', (req, res) => {
 
     try {
       // Read output to browser
+      //console.log(file);
       const readstream = gfs.createReadStream(file.filename);
       readstream.pipe(res);
+      //gfs.writeFileSync("sound.m4a", buffer);
     } catch {
       res.status(404).json({
-        err: 'Didnt work'
+        err: 'Didnt work' //file
       });
     }
   });
