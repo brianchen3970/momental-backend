@@ -83,15 +83,17 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
   try {
     const username = req.body.username;
-    const description = req.body.description;
+    const link = req.body.link;
     const rating = Number(req.body.mood);
     const date = Date.parse(req.body.date);
+    const title = req.body.title;
     
     const newRecording = new Recording({
         username,
-        description, 
+        link, 
         rating, 
         date,
+        title
       });
 
     //upload.single('file');
